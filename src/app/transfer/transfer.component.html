@@ -1,0 +1,66 @@
+<h1>Transfer</h1>
+<form #transferForm="ngForm" (ngSubmit)="onTransfer(transferForm)">
+  <div class="form-group">
+      <label for="from">Enter your mobile number</label>
+    <input
+      type="text"
+      name="from"
+      id="from"
+      class="form-control"
+      placeholder="12********"
+      ngModel
+      required
+      minlength="10"
+      maxlength="10"
+      #from="ngModel"
+    />
+    <small id="helpId" class="text-muted" *ngIf="from.touched && from.invalid"
+      >please enter correct Number with 10 Nubmers after 0!</small
+    >
+  </div>
+  <div class="form-group">
+      <label for="name">Enter Mobile Number you want transfer to</label>
+    <input
+      type="tel"
+      id="to"
+      name="to"
+      class="form-control"
+      placeholder="12********"
+      ngModel
+      required
+      #to="ngModel"
+      minlength="10"
+      maxlength="10"
+    />
+    <small id="helpId" class="text-muted" *ngIf="to.touched && to.invalid"
+      >please enter correct Number with 10 Nubmers after 0!</small
+    >
+  </div>
+  <div class="form-group">
+    <input
+      type="number"
+      name="balance"
+      class="form-control"
+      placeholder="balance"
+      ngModel
+      required
+      #balance="ngModel"
+    />
+    <small
+      id="helpId"
+      class="text-muted"
+      *ngIf="balance.touched && balance.invalid"
+      >please enter a valid value!</small
+    >
+  </div>
+  <div class="form-group">
+    <button 
+      [disabled]="!transferForm.valid"
+      class="btn btn-primary form-control"
+    >
+      transfer
+    </button>
+  </div>
+</form>
+<p *ngIf="currentBalance">{{successMessage}} {{currentBalance | currency:'EG'}} </p>
+<p *ngIf="error">{{error}}</p>

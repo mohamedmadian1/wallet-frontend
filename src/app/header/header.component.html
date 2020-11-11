@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg mb-4 fixed-top navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/transfer"> Wallet </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="togglerNavBar()"
+      data-toggle="collapse"
+      data-target="#navbarText"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse"
+      id="navbarText"
+      [ngClass]="{ show: isOpen }"
+    >
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item" *ngIf="!userIsAuthenticated">
+          <a routerLink="/login" class="nav-link">Login</a>
+        </li>
+        <li class="nav-item" *ngIf="!userIsAuthenticated">
+          <a routerLink="/signup" class="nav-link">signup</a>
+        </li>
+        <li class="nav-item" *ngIf="userIsAuthenticated">
+          <a routerLink="/dashboard" class="nav-link"
+            >Dashboard</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="userIsAuthenticated && role=='admin'">
+          <!-- <li class="nav-item" *ngIf="userIsAuthenticated "> -->
+          <a routerLink="admin" class="nav-link"
+            >Users</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="userIsAuthenticated">
+          <a routerLink="/signup" class="nav-link" (click)="onLogout()"
+            >logout</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
