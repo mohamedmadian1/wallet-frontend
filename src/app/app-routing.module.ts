@@ -9,14 +9,14 @@ import { Role } from './_models/role';
 // import { UsersComponent } from './admin/users/users.component';
 
 const routes: Routes = [
-  { path: '', component: SignupComponent },
+  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   {path:'admin', data: {
     expectedRole: 'admin'
   },
-  canLoad: [AuthGuard],
+  // canLoad: [AuthGuard],
   canActivate: [AuthGuard],
   loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)},
   // { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },

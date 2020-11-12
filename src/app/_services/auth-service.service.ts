@@ -13,7 +13,7 @@ export class AuthService {
   private token: string;
   private tokenTimer: any;
   private authStatusListener = new Subject<boolean>();
-  currentUser = new BehaviorSubject<AuthData>(null);
+  private currentUser = new BehaviorSubject<AuthData>(null);
   constructor(private http: HttpClient, private router: Router) {}
 
   getToken() {
@@ -32,7 +32,7 @@ export class AuthService {
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }
-  //regiser user
+  //register user
   registerUser(user: User) {
     return this.http.post(`http://localhost:8080/api/user/register`, user);
   }

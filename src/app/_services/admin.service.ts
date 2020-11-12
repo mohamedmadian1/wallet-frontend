@@ -23,6 +23,11 @@ export class AdminService {
     });
   }
 
+  //get single single user
+  getUser(userId){
+    return this.http.get<{message:string, user:User}>(`http://localhost:8080/api/user/users/${userId}`)
+  }
+
   getUpdatedUsers(){
     return this.usersUpdatedListenner.asObservable()
   }
@@ -30,5 +35,20 @@ export class AdminService {
   //create user
   createUser(user: User){
     return this.http.post(`http://localhost:8080/api/user/register`, user);
+  }
+
+  //update user
+  updateUser(userId:string,name:string,mobile:number,role:string){
+    return this.http.patch(`http://localhost:8080/api/user/users/${userId}`,{
+      _id:userId,
+      name:name,
+      mobile:mobile,
+      role:role
+    })
+  }
+
+  //delete user
+  deleteUser(userId:string){
+    return this.http.delete(`http://localhost:8080/api/user/users/${userId}`)
   }
 }

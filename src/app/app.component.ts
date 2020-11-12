@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'wallet-angular';
+  isLoggedIn: boolean = true;
+
   constructor(private authService: AuthService) { }
   ngOnInit() {
     this.authService.autoAuthUser()
