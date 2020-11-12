@@ -4,13 +4,14 @@ import { AuthGuard } from '../_services/auth.guard';
 import { UserCreateComponent } from './users/user-create/user-create.component';
 import { UserListComponent } from './users/user-list/user-list.component';
 const routes:Routes = [
-    { path: '', component: UserListComponent,
-    children: [
-       { path: 'create', component: UserCreateComponent },
-    //    { path: 'graphs', component: GraphsComponent },
-    ]},
+    { path: '', component: UserListComponent},
+    // children: [
+    // //    { path: 'graphs', component: GraphsComponent },
+    // ]},
+    { path: 'create', component: UserCreateComponent },
+
     // {  path: "/create", component: UserCreateComponent},
-    {  path: "edit", component: UserCreateComponent},
+    {  path: "edit/:userId", component: UserCreateComponent},
 
 ]
 @NgModule({

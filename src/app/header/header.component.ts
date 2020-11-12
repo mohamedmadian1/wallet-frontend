@@ -12,20 +12,20 @@ export class HeaderComponent implements OnInit {
   userIsAuthenticated = false;
   role:string;
   private authListenerSubs: Subscription;
+  private currentUserRolrSub: Subscription;
+
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-     this.authService.getUser()
+    this.currentUserRolrSub = this.authService.getUser()
      .subscribe(user=>{
-       console.log(user)
+      //  console.log(user)
        if(user){
-
          this.role = user.role;
        }
-      //  this.role = role
      });
-    // console.log(this.authService.getRole())
+
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authListenerSubs = this.authService
       .getAuthStatusListener()
@@ -44,5 +44,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
+    this.currentUserRolrSub.unsubscribe()
   }
 }
