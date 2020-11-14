@@ -9,24 +9,14 @@ import { User } from '../_models/User.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private isAuthenticated = false;
+  // private isAuthenticated = false;
   private token: string;
   private tokenTimer: any;
-  private authStatusListener = new Subject<boolean>();
-  private currentUser = new BehaviorSubject<AuthData>(null);
+  private authStatusListener = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient, private router: Router) {}
 
   getToken() {
     return this.token;
-  }
-
-  getUser(){
-   
-    return this.currentUser.asObservable()
-  }
-
-  getIsAuth() {
-    return this.isAuthenticated;
   }
 
   getAuthStatusListener() {
@@ -40,27 +30,23 @@ export class AuthService {
   login(mobile: number, password: string) {
     const authData: User = { mobile: mobile, password: password };
     this.http
-      .post<AuthData>(
-        'http://localhost:8080/api/user/login',
-        authData
-      )
+      .post<AuthData>('http://localhost:8080/api/user/login', authData)
       .subscribe((response) => {
         console.log('response', response);
-        this.currentUser.next(response)
         const token = response.token;
+        const userId = response._id;
         this.token = token;
-        console.log("role", response.role)
+        console.log('role', response.role);
         if (token) {
           const expiresInDuration = response.expiresIn;
           this.setAuthTimer(expiresInDuration);
-          this.isAuthenticated = true;
           this.authStatusListener.next(true);
           const now = new Date();
           const expirationDate = new Date(
             now.getTime() + expiresInDuration * 1000
           );
           console.log(expirationDate);
-          this.saveAuthData(token, expirationDate);
+          this.saveAuthData(token, expirationDate, userId);
           this.router.navigate(['/transfer']);
         }
       });
@@ -73,53 +59,61 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  autoAuthUser() {
-    const authInformation = this.getAuthData();
-    if (!authInformation) {
-      return;
+  // autoAuthUser() {
+  //   let role;
+  //   const authInformation = this.getAuthData();
+  //   if (!authInformation) {
+  //     return;
+  //   }
+  //   const now = new Date();
+  //   const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
+  //   if (expiresIn > 0) {
+  //     this.token = authInformation.token;
+  //     this.setAuthTimer(expiresIn / 1000);
+  //     this.authStatusListener.next(true);
+  //   }
+  // }
+
+  isLoggedIn() {
+    const token = localStorage.getItem('token');
+    const expirationDate = localStorage.getItem('expiration');
+    if (!token || !expirationDate) {
+      return false;
     }
-    const now = new Date();
-    const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
-    if (expiresIn > 0) {
-      this.token = authInformation.token;
-      // this.role = authInformation.role;
-      this.isAuthenticated = true;
-      this.setAuthTimer(expiresIn / 1000);
-      this.authStatusListener.next(true);
-    }
+    this.authStatusListener.next(true);
+    return true;
   }
 
   logout() {
     this.token = null;
-    this.isAuthenticated = false;
     this.authStatusListener.next(false);
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
-  private saveAuthData(token: string , expirationDate: Date) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string) {
     localStorage.setItem('token', token);
-    // localStorage.setItem('role', role);
+    localStorage.setItem('userId', userId);
     localStorage.setItem('expiration', expirationDate.toISOString());
   }
 
   private clearAuthData() {
     localStorage.removeItem('token');
-    // localStorage.removeItem('role');
+    localStorage.removeItem('userId');
     localStorage.removeItem('expiration');
   }
 
-  private getAuthData() {
-    const token = localStorage.getItem('token');
-    // const role = localStorage.getItem('role');
-    const expirationDate = localStorage.getItem('expiration');
-    if (!token || !expirationDate) {
-      return;
-    }
-    return {
-      token: token,
-      // role:role,
-      expirationDate: new Date(expirationDate),
-    };
-  }
+  // private getAuthData() {
+  //   const token = localStorage.getItem('token');
+  //   const userId = localStorage.getItem('userId');
+  //   const expirationDate = localStorage.getItem('expiration');
+  //   if (!token || !expirationDate) {
+  //     return;
+  //   }
+  //   return {
+  //     token: token,
+  //     userId: userId,
+  //     expirationDate: new Date(expirationDate),
+  //   };
+  // }
 }
