@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-bootstrap-spinner';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AuthData } from '../_models/authData';
 import { User } from '../_models/User.model';
@@ -13,7 +14,12 @@ export class AuthService {
   private token: string;
   private tokenTimer: any;
   private authStatusListener = new BehaviorSubject<boolean>(false);
-  constructor(private http: HttpClient, private router: Router) {}
+  adminStatusListener = new BehaviorSubject<boolean>(false);
+  constructor(
+    private http: HttpClient, 
+    private router: Router, 
+    private spinner: NgxSpinnerService,
+  ) { }
 
   getToken() {
     return this.token;
@@ -22,12 +28,17 @@ export class AuthService {
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }
+
+  getAdminStatusListener() {
+    return this.adminStatusListener.asObservable()
+  }
   //register user
   registerUser(user: User) {
     return this.http.post(`http://localhost:8080/api/user/register`, user);
   }
   //login user
   login(mobile: number, password: string) {
+    this.spinner.show()
     const authData: User = { mobile: mobile, password: password };
     this.http
       .post<AuthData>('http://localhost:8080/api/user/login', authData)
@@ -36,17 +47,21 @@ export class AuthService {
         const token = response.token;
         const userId = response._id;
         this.token = token;
-        console.log('role', response.role);
         if (token) {
           const expiresInDuration = response.expiresIn;
           this.setAuthTimer(expiresInDuration);
           this.authStatusListener.next(true);
+          console.log('role', response.role);
+          if (response.role == "admin") {
+            this.adminStatusListener.next(true)
+          }
           const now = new Date();
           const expirationDate = new Date(
             now.getTime() + expiresInDuration * 1000
           );
           console.log(expirationDate);
           this.saveAuthData(token, expirationDate, userId);
+          this.spinner.hide()
           this.router.navigate(['/transfer']);
         }
       });
@@ -87,6 +102,7 @@ export class AuthService {
   logout() {
     this.token = null;
     this.authStatusListener.next(false);
+    this.adminStatusListener.next(false)
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(['/login']);

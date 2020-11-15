@@ -5,3 +5,18 @@ h1{
 #template{
     width: 30% !important;
 }
+
+/* .modal.show .modal-dialog {
+    transform: none;
+    /* width: 100%; */
+    /* max-width: 98%; */
+/* } */ 
+
+/* .modal-dialog {
+    position: relative;
+    width: auto;
+    margin: .5rem;
+    pointer-events: none;
+    width: 100%;
+    max-width: 95% !important;
+} */

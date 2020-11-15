@@ -28,7 +28,7 @@
         <li class="nav-item" *ngIf="userIsAuthenticated">
           <a routerLink="/transfer" class="nav-link">Transfer</a>
         </li>
-        <li class="nav-item" *ngIf="userIsAuthenticated && role == 'admin'">
+        <li class="nav-item" *ngIf="userIsAuthenticated && isAdmin &&  role == 'admin'">
           <!-- <li class="nav-item" *ngIf="userIsAuthenticated "> -->
           <a routerLink="admin" class="nav-link">Users</a>
         </li>

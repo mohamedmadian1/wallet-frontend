@@ -12,7 +12,9 @@ export class HeaderComponent implements OnInit {
   isOpen: boolean = false;
   userIsAuthenticated = false;
   role: string;
+  isAdmin = false;
   private authListenerSubs: Subscription;
+  private adminStatusListenerSubs: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -24,10 +26,15 @@ export class HeaderComponent implements OnInit {
 
     this.adminService.getUser(userId).subscribe((userData) => {
       //  console.log(user)
-      if (userData) {
-        this.role = userData.user.role;
+      if (userData && userData.user.role=="admin") {
+        console.log(userData)
+        this.authService.adminStatusListener.next(true)
       }
+      this.role = userData.user.role;
     });
+    this.adminStatusListenerSubs =this.authService.getAdminStatusListener().subscribe(isaAdmin=>{
+          this.isAdmin = isaAdmin
+    })
 
     // this.userIsAuthenticated = this.authService.isLoggedIn();
     this.authListenerSubs = this.authService.getAuthStatusListener().subscribe((isAuth) => {
@@ -50,5 +57,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
+    this.adminStatusListenerSubs.unsubscribe();
   }
 }

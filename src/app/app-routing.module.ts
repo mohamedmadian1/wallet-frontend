@@ -11,7 +11,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 // import { UsersComponent } from './admin/users/users.component';
 
 const routes: Routes = [
-  { path: '', component: WelcomeComponent },
+  { path: '', component: WelcomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'transfer', component: TransferComponent, canActivate: [AuthGuard] },

@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/_services/auth-service.service';
 import { NgxSpinnerService } from 'ngx-bootstrap-spinner';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UserCreateComponent } from '../user-create/user-create.component';
+import { UserCreateModalComponent } from '../user-create-modal/user-create-modal.component';
 
 @Component({
   selector: 'app-user-list',
@@ -58,14 +59,18 @@ export class UserListComponent implements OnInit {
   }
 
   //modal open for edit or create user
-  openModalWithComponent(mode: string) {
+  openModalWithComponent(mode: string,userId:string,title:string) {
+    console.log(mode, userId)
     const initialState = {
       mode: mode,
+      userId:userId,
+      title:title
     };
-    this.modalRef = this.modalService.show(UserCreateComponent, {
+    this.modalRef = this.modalService.show(UserCreateModalComponent, {
       initialState: initialState,
       // backdrop:'static',
       keyboard: false,
+      // class:'modal-width'
     });
   }
 }

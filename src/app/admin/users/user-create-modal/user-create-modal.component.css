@@ -1,0 +1,17 @@
+form {
+    width: 400px;
+    margin: auto;
+  }
+  
+  /* ::ng-deep .modal-content{
+      width: 100%;
+    max-width: 1200px;
+  } */
+  /* .modal-dialog {
+    position: relative;
+    width: auto;
+    margin: .5rem;
+    pointer-events: none;
+    width: 100%;
+    max-width: 95% !important;
+} */

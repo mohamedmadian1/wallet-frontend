@@ -19,8 +19,8 @@
                 <td>{{user.mobile}}</td>
                 <td>{{user.role}}</td>
                 <td>
-                    <a [routerLink]="['edit',user._id]" class="btn btn-warning">Edit</a>
-                    <!-- <a  (click)="openModalWithComponent('edit')" class="btn btn-warning">Edit</a> -->
+                    <!-- <a [routerLink]="['edit',user._id]" class="btn btn-warning">Edit</a> -->
+                    <a  (click)="openModalWithComponent('edit',user._id,'Update User')" class="btn btn-warning">Edit</a>
 
                 </td>
                 <td>
@@ -40,8 +40,8 @@
         </tbody>
     </table>
 
-    <a class="btn btn-primary" [routerLink]="['create']"  >create user</a>
-    <!-- <a  (click)="openModalWithComponent('create')" class="btn btn-warning">create user</a> -->
+    <!-- <a class="btn btn-primary" [routerLink]="['create']"  >create user</a> -->
+    <a  (click)="openModalWithComponent('create',null,'Create User')" class="btn btn-primary">create user</a>
 
 </div>
 <router-outlet></router-outlet>
