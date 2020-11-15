@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg mb-4 fixed-top navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" routerLink="/transfer"> Wallet </a>
+    <a class="navbar-brand" routerLink="/"> Wallet </a>
     <button
       class="navbar-toggler"
       type="button"
@@ -23,15 +23,14 @@
           <a routerLink="/signup" class="nav-link">signup</a>
         </li>
         <li class="nav-item" *ngIf="userIsAuthenticated">
-          <a routerLink="/dashboard" class="nav-link"
-            >Dashboard</a
-          >
+          <a routerLink="/dashboard" class="nav-link">Dashboard</a>
         </li>
-        <li class="nav-item" *ngIf="userIsAuthenticated && role=='admin'">
+        <li class="nav-item" *ngIf="userIsAuthenticated">
+          <a routerLink="/transfer" class="nav-link">Transfer</a>
+        </li>
+        <li class="nav-item" *ngIf="userIsAuthenticated && role == 'admin'">
           <!-- <li class="nav-item" *ngIf="userIsAuthenticated "> -->
-          <a routerLink="admin" class="nav-link"
-            >Users</a
-          >
+          <a routerLink="admin" class="nav-link">Users</a>
         </li>
         <li class="nav-item" *ngIf="userIsAuthenticated">
           <a routerLink="/signup" class="nav-link" (click)="onLogout()"

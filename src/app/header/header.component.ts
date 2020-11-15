@@ -1,6 +1,7 @@
 import { AuthService } from './../_services/auth-service.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AdminService } from '../_services/admin.service';
 
 @Component({
   selector: 'app-header',
@@ -10,28 +11,33 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit {
   isOpen: boolean = false;
   userIsAuthenticated = false;
-  role:string;
+  role: string;
   private authListenerSubs: Subscription;
-  private currentUserRolrSub: Subscription;
 
-
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private adminService: AdminService
+  ) {}
 
   ngOnInit(): void {
-    this.currentUserRolrSub = this.authService.getUser()
-     .subscribe(user=>{
-      //  console.log(user)
-       if(user){
-         this.role = user.role;
-       }
-     });
+    const userId = localStorage.getItem('userId');
 
-    this.userIsAuthenticated = this.authService.getIsAuth();
-    this.authListenerSubs = this.authService
-      .getAuthStatusListener()
-      .subscribe((isAuth) => {
-        this.userIsAuthenticated = isAuth;
-      });
+    this.adminService.getUser(userId).subscribe((userData) => {
+      //  console.log(user)
+      if (userData) {
+        this.role = userData.user.role;
+      }
+    });
+
+    // this.userIsAuthenticated = this.authService.isLoggedIn();
+    this.authListenerSubs = this.authService.getAuthStatusListener().subscribe((isAuth) => {
+      this.userIsAuthenticated = isAuth;
+    });
+    // this.authListenerSubs = this.authService
+    //   .getAuthStatusListener()
+    //   .subscribe((isAuth) => {
+    //     this.userIsAuthenticated = isAuth;
+    //   });
   }
 
   togglerNavBar() {
@@ -44,6 +50,5 @@ export class HeaderComponent implements OnInit {
 
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
-    this.currentUserRolrSub.unsubscribe()
   }
 }

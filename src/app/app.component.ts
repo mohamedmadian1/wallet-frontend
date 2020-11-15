@@ -1,3 +1,4 @@
+import { AdminService } from './_services/admin.service';
 import { AuthService } from './_services/auth-service.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,8 +11,9 @@ export class AppComponent implements OnInit {
   title = 'wallet-angular';
   isLoggedIn: boolean = true;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private adminService:AdminService) { }
   ngOnInit() {
-    this.authService.autoAuthUser()
+   
+    // this.authService.autoAuthUser()
   }
 }

@@ -14,6 +14,7 @@ import { TransferComponent } from './transfer/transfer.component';
 import { AuthInterceptor } from './_services/auth-interceptor';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HeaderComponent,
     TransferComponent,
     DashboardComponent,
+    WelcomeComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, NgxSpinnerModule, BrowserAnimationsModule],
   providers: [
